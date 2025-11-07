@@ -5,7 +5,7 @@ namespace Domain.Entities;
 public class Produto
 {
     public Guid Id { get; private set; }
-    public string Sku { get; private set; }
+    public string Codigo { get; private set; }
     public string Nome { get; private set; }
     public string Descricao { get; private set; }
     public decimal Preco { get; private set; }
@@ -17,10 +17,10 @@ public class Produto
 
     private Produto() { }
 
-    public Produto(string sku, string nome, string descricao, decimal preco, string categoria)
+    public Produto(string codigo, string nome, string descricao, decimal preco, string categoria)
     {
         Id = Guid.NewGuid();
-        Sku = sku;
+        Codigo = codigo;
         Nome = nome;
         Descricao = descricao;
         Preco = preco;
@@ -63,8 +63,8 @@ public class Produto
 
     private void ValidarProduto()
     {
-        if (string.IsNullOrWhiteSpace(Sku))
-            throw new ArgumentException("SKU é obrigatório.");
+        if (string.IsNullOrWhiteSpace(Codigo))
+            throw new ArgumentException("Código é obrigatório.");
         if (string.IsNullOrWhiteSpace(Nome))
             throw new ArgumentException("Nome é obrigatório.");
         if (Preco <= 0)
