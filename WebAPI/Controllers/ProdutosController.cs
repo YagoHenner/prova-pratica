@@ -1,4 +1,5 @@
 ﻿using Application.UseCases.Produtos.CriarProduto;
+using Application.UseCases.Produtos.EditarProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common.HttpResults;
