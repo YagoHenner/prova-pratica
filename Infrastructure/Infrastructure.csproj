@@ -18,7 +18,4 @@
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Application\Application.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Data\" />
-	</ItemGroup>
 </Project>
