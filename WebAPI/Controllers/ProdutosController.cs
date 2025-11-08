@@ -1,6 +1,8 @@
 ﻿using Application.UseCases.Produtos.CriarProduto;
 using Application.UseCases.Produtos.DeletarProduto;
 using Application.UseCases.Produtos.EditarProduto;
+using Application.UseCases.Produtos.ListarProdutos;
+using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Common.HttpResults;
@@ -64,6 +66,32 @@ public class ProdutosController(ISender mediator, ResultSerializer resultSeriali
     public async Task<IResult> DeletarProduto(Guid id)
     {
         var result = await mediator.Send(new DeletarProdutoCommand(id));
+        return resultSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Lista os produtos com base em filtros e paginação.
+    /// </summary>
+    /// <param name="categoria">Filtra por categoria exata.</param>
+    /// <param name="precoMinimo">Filtra por preço mínimo.</param>
+    /// <param name="precoMaximo">Filtra por preço máximo.</param>
+    /// <param name="status">Filtra por status (0 = Inativo, 1 = Ativo).</param>
+    /// <param name="pagina">Número da página (Padrão: 1).</param>
+    /// <param name="tamanhoPagina">Itens por página (Padrão: 10, Máx: 50).</param>
+    /// <returns>Uma lista paginada de produtos e metadados de paginação.</returns>
+    /// <response code="200">Retorna a lista de produtos (pode ser vazia).</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(ObterListaProdutosResponse), StatusCodes.Status200OK)]
+    public async Task<IResult> ObterListaProdutos(
+        [FromQuery] string? categoria,
+        [FromQuery] decimal? precoMinimo,
+        [FromQuery] decimal? precoMaximo,
+        [FromQuery] StatusProdutoEnum? status,
+        [FromQuery] int pagina = 1,
+        [FromQuery] int tamanhoPagina = 10)
+    {
+        var query = new ObterListaProdutosQuery(categoria, precoMinimo, precoMaximo, status, pagina, tamanhoPagina);
+        var result = await mediator.Send(query);
         return resultSerializer.Serialize(result);
     }
 }
