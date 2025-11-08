@@ -15,6 +15,7 @@ public static class DependencyInjection
         options.UseNpgsql(configuration.GetConnectionString("LojasHennerDb")));
 
 
+        services.AddScoped<IProdutoRepository, ProdutoRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
