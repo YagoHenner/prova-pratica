@@ -1,4 +1,5 @@
 ﻿using Application.UseCases.Produtos.CriarProduto;
+using Application.UseCases.Produtos.DeletarProduto;
 using Application.UseCases.Produtos.EditarProduto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,22 @@ public class ProdutosController(ISender mediator, ResultSerializer resultSeriali
     {
         command.AtribuirId(id);
         var result = await mediator.Send(command);
+        return resultSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Exclui um produto.
+    /// </summary>
+    /// <param name="id">ID do produto a ser excluído.</param>
+    /// <returns>Nenhum conteúdo (204) em caso de sucesso.</returns>
+    /// <response code="204">Produto excluído com sucesso.</response>
+    /// <response code="422">Produto não encontrado (ou falha).</response>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IResult> DeletarProduto(Guid id)
+    {
+        var result = await mediator.Send(new DeletarProdutoCommand(id));
         return resultSerializer.Serialize(result);
     }
 }

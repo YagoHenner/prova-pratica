@@ -25,4 +25,9 @@ public class ProdutoRepository(LojasHennerDbContext context) : IProdutoRepositor
     {
         context.Entry(produto).State = EntityState.Modified;
     }
+
+    public void Deletar(Produto produto)
+    {
+        context.Produtos.Remove(produto);
+    }
 }
