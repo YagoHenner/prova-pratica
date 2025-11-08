@@ -28,4 +28,24 @@ public class ProdutosController(ISender mediator, ResultSerializer resultSeriali
 
         return resultSerializer.Serialize(result);
     }
+
+    /// <summary>
+    /// Atualiza um produto existente.
+    /// </summary>
+    /// <param name="id">ID do produto a ser atualizado.</param>
+    /// <param name="command">Novos dados do produto.</param>
+    /// <returns>Nenhum conteúdo (204) em caso de sucesso.</returns>
+    /// <response code="204">Produto atualizado com sucesso.</response>
+    /// <response code="400">Dados inválidos (ex: nome faltando, preço zero).</response>
+    /// <response code="422">Produto não encontrado.</response>
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IResult> AtualizarProduto(Guid id, [FromBody] EditarProdutoCommand command)
+    {
+        command.AtribuirId(id);
+        var result = await mediator.Send(command);
+        return resultSerializer.Serialize(result);
+    }
 }

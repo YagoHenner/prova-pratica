@@ -8,6 +8,10 @@ namespace Infrastructure.Repositories;
 
 public class ProdutoRepository(LojasHennerDbContext context) : IProdutoRepository
 {
+    public async Task<Produto?> Obter(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await context.Produtos.FindAsync([id], cancellationToken);
+    }
     public async Task<Produto?> ObterPorCodigo(string codigo, CancellationToken cancellationToken = default)
     {
         return await context.Produtos.FirstOrDefaultAsync(p => p.Codigo == codigo, cancellationToken);
@@ -15,5 +19,10 @@ public class ProdutoRepository(LojasHennerDbContext context) : IProdutoRepositor
     public async Task Criar(Produto produto, CancellationToken cancellationToken = default)
     {
         await context.Produtos.AddAsync(produto, cancellationToken);
+    }
+
+    public void Editar(Produto produto)
+    {
+        context.Entry(produto).State = EntityState.Modified;
     }
 }

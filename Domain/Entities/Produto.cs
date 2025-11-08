@@ -32,7 +32,7 @@ public class Produto
         ValidarProduto();
     }
 
-    public void Update(string name, string description, decimal price, string category)
+    public void Editar(string name, string description, decimal price, string category)
     {
         Nome = name;
         Descricao = description;
