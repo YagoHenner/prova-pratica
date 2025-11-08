@@ -7,4 +7,5 @@ public interface IProdutoRepository
 {
     Task<Produto?> ObterPorCodigo(string codigo, CancellationToken cancellationToken = default);
     Task Criar(Produto produto, CancellationToken cancellationToken = default);
+    void Editar(Produto produto);
 }
