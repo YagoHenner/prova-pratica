@@ -24,9 +24,9 @@ Pré-requisitos
 
 Antes de começar, garanta que você tem os seguintes softwares instalados:
 
-.NET 9 SDK
+[.NET 9 SDK](https://dotnet.microsoft.com/pt-br/download/dotnet/9.0)
 
-Docker Desktop
+[Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 EF Core CLI Tool (ferramenta de linha de comando):
 ```
