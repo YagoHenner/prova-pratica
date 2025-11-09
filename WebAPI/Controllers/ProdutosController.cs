@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.Produtos.CriarProduto;
 using Application.UseCases.Produtos.DeletarProduto;
 using Application.UseCases.Produtos.EditarProduto;
+using Application.UseCases.Produtos.EnviarImagemProdutoMinio;
 using Application.UseCases.Produtos.ListarProdutos;
 using Domain.Enums;
 using MediatR;
@@ -92,6 +93,25 @@ public class ProdutosController(ISender mediator, ResultSerializer resultSeriali
     {
         var query = new ObterListaProdutosQuery(categoria, precoMinimo, precoMaximo, status, pagina, tamanhoPagina);
         var result = await mediator.Send(query);
+        return resultSerializer.Serialize(result);
+    }
+
+    /// <summary>
+    /// Faz upload da imagem de um produto.
+    /// </summary>
+    /// <param name="command">Contém o ID (da rota) e o Arquivo (do formulário).</param>
+    /// <returns>A URL pública da imagem salva.</returns>
+    /// <response code="200">Upload com sucesso.</response>
+    /// <response code="400">Arquivo inválido (formato, tamanho) ou faltando.</response>
+    /// <response code="422">Produto não encontrado.</response>
+    [HttpPost("foto")]
+    [ProducesResponseType(typeof(EnviarFotoProdutoMinioResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
+    public async Task<IResult> UploadImage(
+        [FromForm] EnviarFotoProdutoMinioCommand command)
+    {
+        var result = await mediator.Send(command);
         return resultSerializer.Serialize(result);
     }
 }
