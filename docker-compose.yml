@@ -1,5 +1,4 @@
 services:
-  # Banco de dados
   db:
     image: postgres:16
     container_name: lojas_henner_db
@@ -17,24 +16,41 @@ services:
       timeout: 5s
       retries: 5
 
-  minio:
-    image: minio/minio
-    container_name: productcatalog_minio
+  # Corrigir erro exited(1)
+  #
+  # minio:
+  #   image: minio/minio
+  #   container_name: lojashenner_minio
+  #   ports:
+  #     - "9000:9000" # Porta da API do MinIO
+  #     - "9001:9001" # Porta do Console Web
+  #   environment:
+  #     MINIO_ROOT_USER: usuario
+  #     MINIO_ROOT_PASSWORD: admin
+  #   command: server /data --console-address ":9001"
+  #   volumes:
+  #     - minio_data:/data
+
+  app:
+    build:
+      context: . 
+      dockerfile: WebAPI/Dockerfile
+    container_name: lojashenner_api
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - '5015:8080'
     environment:
-      MINIO_ROOT_USER: usuario
-      MINIO_ROOT_PASSWORD: admin
-    command: server /data --console-address ":9001"
-    volumes:
-      - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ConnectionStrings__LojasHennerDb=Host=db;Port=5432;Database=lojas_henner_db;Username=postgres;Password=admin
+      - Minio__Endpoint=http://host.docker.internal:9000
+      - Minio__AccessKey=usuario
+      - Minio__SecretKey=admin
+      - Minio__BucketName=produtos
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      db:
+        condition: service_healthy
+      # minio:
+      #   condition: service_healthy
 
 volumes:
   postgres_data:
-  minio_data:
+  # minio_data:

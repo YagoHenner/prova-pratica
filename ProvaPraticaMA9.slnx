@@ -3,6 +3,11 @@
     <File Path=".dockerignore" />
     <File Path="docker-compose.yml" />
   </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/Application/" />
+  <Folder Name="/tests/Application/UseCases/">
+    <Project Path="UseCasesTests/UseCasesTests.csproj" Id="0df796c6-7536-437d-a616-6d31271b1f91" />
+  </Folder>
   <Project Path="Application/Application.csproj" Id="d53a5182-1f61-4ef7-8bd1-1e8938b0e640" />
   <Project Path="Domain/Domain.csproj" Id="b9c5b617-a058-47a2-84b0-1ed6ae59535d" />
   <Project Path="Infrastructure/Infrastructure.csproj" Id="6cb7ac41-3e33-4e9c-91e2-790ee4ed838b" />
