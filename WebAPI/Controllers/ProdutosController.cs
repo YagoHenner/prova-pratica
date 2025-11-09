@@ -104,7 +104,7 @@ public class ProdutosController(ISender mediator, ResultSerializer resultSeriali
     /// <response code="200">Upload com sucesso.</response>
     /// <response code="400">Arquivo inválido (formato, tamanho) ou faltando.</response>
     /// <response code="422">Produto não encontrado.</response>
-    [HttpPost("foto")]
+    [HttpPost("{id:guid}/foto")]
     [ProducesResponseType(typeof(EnviarFotoProdutoMinioResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
